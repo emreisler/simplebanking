@@ -26,7 +26,7 @@ Retrieve account details for a specific account.
 
 **cURL Command**:
 ```bash
-curl --location --request GET 'http://localhost:8082/account/v1/123-4567'
+curl --location --request GET 'http://localhost:8082/account/v1/669-7788'
 ```
 
 **Response Example**:
@@ -64,7 +64,7 @@ Credit an account by adding a specified amount.
 
 **cURL Command**:
 ```bash
-curl --location --request POST 'http://localhost:8080/account/v1/credit/123-4567' \
+curl --location --request POST 'http://localhost:8082/account/v1/credit/669-7788' \
 --header 'Content-Type: application/json' \
 --data-raw '{
     "amount": 1000.0
@@ -91,7 +91,7 @@ Debit an account by subtracting a specified amount. This operation may fail if t
 
 **cURL Command**:
 ```bash
-curl --location --request POST 'http://localhost:8080//account/v1 /debit/123-4567' \
+curl --location --request POST 'http://localhost:8082/account/v1/debit/669-7788' \
 --header 'Content-Type: application/json' \
 --data-raw '{
     "amount": 500.0
