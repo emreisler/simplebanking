@@ -4,12 +4,14 @@ import github.com.emreisler.simplebanking.controller.TransactionStatus;
 import github.com.emreisler.simplebanking.converters.AccountConverter;
 import github.com.emreisler.simplebanking.converters.TransactionConverter;
 import github.com.emreisler.simplebanking.exception.AccountNotFoundException;
+import github.com.emreisler.simplebanking.exception.InsufficientBalanceException;
 import github.com.emreisler.simplebanking.model.*;
 import github.com.emreisler.simplebanking.persistence.entity.AccountEntity;
 import github.com.emreisler.simplebanking.persistence.entity.TransactionEntity;
 import github.com.emreisler.simplebanking.persistence.repository.AccountRepository;
 import github.com.emreisler.simplebanking.persistence.repository.TransactionRepository;
 import github.com.emreisler.simplebanking.services.AccountService;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -96,28 +98,31 @@ class ServiceTests {
 
     @Test
     void testPostTransaction_InsufficientBalance() {
-        // Arrange
-        String accountNumber = "123456";
-        String owner = "John Doe";
-        double initialBalance = 100.0;
-        double transactionAmount = 500.0;
-        AccountEntity mockAccountEntity = new AccountEntity();
-        mockAccountEntity.setAccountNumber(accountNumber);
-        mockAccountEntity.setOwner(owner);
-        Transaction mockTransaction = new WithdrawalTransaction(transactionAmount);
-        TransactionEntity mockTransactionEntity = TransactionConverter.toEntity(mockTransaction);
+        Assertions.assertThrows( InsufficientBalanceException.class, () -> {
+            // Arrange
+            String accountNumber = "123456";
+            String owner = "John Doe";
+            double initialBalance = 100.0;
+            double transactionAmount = 500.0;
+            AccountEntity mockAccountEntity = new AccountEntity();
+            mockAccountEntity.setAccountNumber(accountNumber);
+            mockAccountEntity.setOwner(owner);
+            Transaction mockTransaction = new WithdrawalTransaction(transactionAmount);
+            TransactionEntity mockTransactionEntity = TransactionConverter.toEntity(mockTransaction);
 
-        when(accountRepository.findByAccountNumber(accountNumber)).thenReturn(Optional.of(mockAccountEntity));
-        when(transactionRepository.save(any(TransactionEntity.class))).thenReturn(mockTransactionEntity);
+            when(accountRepository.findByAccountNumber(accountNumber)).thenReturn(Optional.of(mockAccountEntity));
+            when(transactionRepository.save(any(TransactionEntity.class))).thenReturn(mockTransactionEntity);
 
-        // Act
-        TransactionStatus result = accountService.post(accountNumber, mockTransaction);
+            // Act
+            TransactionStatus result = accountService.post(accountNumber, mockTransaction);
 
-        // Assert
-        assertNotNull(result);
-        assertEquals(github.com.emreisler.simplebanking.enums.TransactionStatus.FAILED.toString(), result.getStatus());
-        verify(accountRepository, times(1)).findByAccountNumber(accountNumber);
-        verify(transactionRepository, times(2)).save(any(TransactionEntity.class)); // Initially and after status update
+            // Assert
+            assertNotNull(result);
+            assertEquals(github.com.emreisler.simplebanking.enums.TransactionStatus.FAILED.toString(), result.getStatus());
+            verify(accountRepository, times(1)).findByAccountNumber(accountNumber);
+            verify(transactionRepository, times(2)).save(any(TransactionEntity.class)); // Initially and after status update
+        });
+
     }
 
 }

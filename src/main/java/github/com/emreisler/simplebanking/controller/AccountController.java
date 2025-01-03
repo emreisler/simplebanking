@@ -1,7 +1,5 @@
 package github.com.emreisler.simplebanking.controller;
 
-import github.com.emreisler.simplebanking.converters.AccountConverter;
-import github.com.emreisler.simplebanking.dto.AccountDto;
 import github.com.emreisler.simplebanking.dto.AmountDto;
 import github.com.emreisler.simplebanking.exception.BadAmountException;
 import github.com.emreisler.simplebanking.model.Account;
@@ -22,9 +20,8 @@ public class AccountController {
     }
 
     @GetMapping("{accountNumber}")
-    public ResponseEntity<AccountDto> getAccount(@PathVariable String accountNumber) {
-        Account account = accountService.findAccount(accountNumber);
-        return ResponseEntity.ok(AccountConverter.toDto(account));
+    public ResponseEntity<Account> getAccount(@PathVariable String accountNumber) {
+        return ResponseEntity.ok(accountService.findAccount(accountNumber));
     }
 
     @PostMapping("/credit/{accountNumber}")
