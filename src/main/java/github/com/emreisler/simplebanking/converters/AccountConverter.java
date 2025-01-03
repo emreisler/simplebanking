@@ -1,7 +1,5 @@
 package github.com.emreisler.simplebanking.converters;
 
-import github.com.emreisler.simplebanking.dto.AccountDto;
-import github.com.emreisler.simplebanking.dto.TransactionDto;
 import github.com.emreisler.simplebanking.model.Account;
 import github.com.emreisler.simplebanking.model.Transaction;
 import github.com.emreisler.simplebanking.persistence.entity.AccountEntity;
@@ -45,19 +43,5 @@ public class AccountConverter {
         entity.setVersion(account.getVersion());
 
         return entity;
-    }
-
-    public static AccountDto toDto(Account model) {
-        AccountDto dto = new AccountDto();
-        dto.setAccountNumber(model.getAccountNumber());
-        dto.setOwner(model.getOwner());
-        dto.setBalance(model.getBalance());
-        dto.setCreatedAt(model.getCreatedAt());
-        List<TransactionDto> transactionDtos = model.getTransactions().stream()
-                .map(TransactionConverter::toDto)
-                .collect(Collectors.toList());
-        dto.setTransactions(transactionDtos);
-        return dto;
-
     }
 }
