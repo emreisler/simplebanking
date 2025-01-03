@@ -146,15 +146,4 @@ Occurs when attempting to debit an account with insufficient balance.
 }
 ```
 
----
-
-## Technologies Used
-
-- **Spring Boot**: Backend framework for building REST APIs.
-- **H2 Database**: In-memory database for testing and development.
-- **Gradle**: Build tool for dependency management.
-- **Java 17**: Programming language for backend development.
-
----
-
-This file provides comprehensive documentation of the Simple Banking API, including example requests, responses, and error handling guidelines.
+Please see application.properties file for configurations

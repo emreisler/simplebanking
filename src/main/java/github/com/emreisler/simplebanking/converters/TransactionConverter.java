@@ -1,7 +1,6 @@
 package github.com.emreisler.simplebanking.converters;
 
 
-import github.com.emreisler.simplebanking.dto.TransactionDto;
 import github.com.emreisler.simplebanking.enums.TransactionType;
 import github.com.emreisler.simplebanking.model.DepositTransaction;
 import github.com.emreisler.simplebanking.model.Transaction;
@@ -54,15 +53,5 @@ public class TransactionConverter {
         } else {
             throw new IllegalArgumentException("Unsupported transaction type: " + model.getClass());
         }
-    }
-
-    public static TransactionDto toDto(Transaction model) {
-        TransactionDto transactionDto = new TransactionDto();
-        transactionDto.setAmount(model.getAmount());
-        transactionDto.setDate(model.getDate());
-        transactionDto.setStatus(model.getStatus());
-        transactionDto.setType(model.getType());
-        transactionDto.setTransactionId(model.getTransactionId());
-        return transactionDto;
     }
 }

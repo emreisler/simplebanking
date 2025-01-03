@@ -5,19 +5,18 @@ import github.com.emreisler.simplebanking.model.Account;
 import github.com.emreisler.simplebanking.model.DepositTransaction;
 import github.com.emreisler.simplebanking.model.WithdrawalTransaction;
 import github.com.emreisler.simplebanking.persistence.repository.AccountRepository;
-import github.com.emreisler.simplebanking.persistence.repository.TransactionRepository;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 @Component
+@ConditionalOnProperty(prefix = "data", name = "initialize", havingValue = "true", matchIfMissing = false)
 public class DataInitializer implements CommandLineRunner {
 
     private final AccountRepository accountRepository;
-    private final TransactionRepository transactionServiceFactory;
 
-    public DataInitializer( AccountRepository accountRepository, TransactionRepository transactionServiceFactory) {
+    public DataInitializer( AccountRepository accountRepository) {
         this.accountRepository = accountRepository;
-        this.transactionServiceFactory = transactionServiceFactory;
     }
 
     @Override
